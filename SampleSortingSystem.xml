@@ -5,6 +5,7 @@ typedef struct{
 }Sample;
 
 Sample QueueToRobotSample; 
+int SampleSize;
 
 chan IncomingSample;
 chan BrakeToQueue;
@@ -14,10 +15,8 @@ chan JobToQueue;
 chan RobotToScanner;
 chan RobotToQueue;
 chan ScannerToQueue;
-chan ScannerToRobot;
-
-</declaration><template><name x="5" y="5">Input System</name><declaration>// Place local declarations here.
-</declaration><location id="id0" x="16" y="-40"></location><init ref="id0"/></template><template><name>BrakeSystem</name><declaration>clock SampleBrake</declaration><location id="id1" x="-272" y="-456"><name x="-282" y="-486">Error</name><label kind="comments">Human intervention required</label></location><location id="id2" x="-272" y="-152"><name x="-256" y="-160">SampleInserted</name></location><location id="id3" x="-272" y="-304"><name x="-264" y="-336">Break</name><label kind="invariant" x="-248" y="-312">SampleBrake &lt;= 1</label></location><location id="id4" x="-720" y="-304"><name x="-768" y="-312">Start</name></location><init ref="id4"/><transition><source ref="id2"/><target ref="id4"/><nail x="-720" y="-152"/><nail x="-720" y="-152"/></transition><transition><source ref="id3"/><target ref="id1"/></transition><transition><source ref="id3"/><target ref="id2"/><label kind="synchronisation" x="-264" y="-240">BrakeToQueue!</label></transition><transition><source ref="id4"/><target ref="id3"/><label kind="synchronisation" x="-560" y="-336">IncomingSample?</label><label kind="assignment" x="-560" y="-352">SampleBrake = 0</label></transition></template><template><name>Queue System</name><location id="id5" x="0" y="0"></location><init ref="id5"/></template><template><name>Robot System</name><location id="id6" x="0" y="0"></location><init ref="id6"/></template><template><name>Scanner System</name><location id="id7" x="0" y="0"></location><init ref="id7"/></template><template><name>Job System</name><location id="id8" x="0" y="0"></location><init ref="id8"/></template><system>// Place template instantiations here.
+chan ScannerToRobot;</declaration><template><name x="5" y="5">InputSystem</name><declaration>// Place local declarations here.
+</declaration><location id="id0" x="16" y="-40"></location><init ref="id0"/></template><template><name>BrakeSystem</name><location id="id1" x="0" y="0"></location><init ref="id1"/></template><template><name>QueueSystem</name><location id="id2" x="-480" y="-232"></location><init ref="id2"/></template><template><name>RobotSystem</name><location id="id3" x="-1056" y="-488"><name x="-1112" y="-520">backToQueue</name></location><location id="id4" x="-616" y="-488"><name x="-632" y="-520">sampleProvided</name></location><location id="id5" x="-840" y="-488"><name x="-888" y="-520">samplePicked</name></location><location id="id6" x="-840" y="-360"><name x="-888" y="-352">initial</name></location><init ref="id6"/><transition><source ref="id5"/><target ref="id6"/><label kind="synchronisation" x="-816" y="-432">RobotToQueue!</label><nail x="-824" y="-424"/></transition><transition><source ref="id5"/><target ref="id3"/><label kind="guard" x="-1016" y="-464">job:=0</label><label kind="synchronisation" x="-1016" y="-480">RobotToQueue!</label></transition><transition><source ref="id5"/><target ref="id4"/><label kind="guard" x="-784" y="-464">SampleSize = 1</label><label kind="synchronisation" x="-784" y="-480">RobotToScanner!</label></transition><transition><source ref="id6"/><target ref="id5"/><label kind="guard" x="-968" y="-424">SampleSize = 0</label><label kind="synchronisation" x="-968" y="-440">QueueToRobot!</label><nail x="-856" y="-424"/></transition></template><template><name>ScannerSystem</name><location id="id7" x="0" y="0"></location><init ref="id7"/></template><template><name>JobSystem</name><location id="id8" x="0" y="0"></location><init ref="id8"/></template><system>// Place template instantiations here.
 Process = Template();
 
 // List one or more processes to be composed into a system.
