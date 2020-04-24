@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.
-</declaration><template><name x="5" y="5">Template</name><declaration>// Place local declarations here.
-</declaration><location id="id0" x="16" y="-40"></location><init ref="id0"/></template><system>// Place template instantiations here.
+typedef struct{
+ 	int id;
+	bool job;
+}Sample;
+
+Sample QueueToRobotSample; 
+
+chan IncomingSample;
+chan BrakeToQueue;
+chan QueueToRobot;
+chan QueueToJob;
+chan JobToQueue;
+chan RobotToScanner;
+chan RobotToQueue;
+chan ScannerToQueue;
+chan ScannerToRobot;
+
+</declaration><template><name x="5" y="5">Input System</name><declaration>// Place local declarations here.
+</declaration><location id="id0" x="16" y="-40"></location><init ref="id0"/></template><template><name>Brake System</name><location id="id1" x="0" y="0"></location><init ref="id1"/></template><template><name>Queue System</name><location id="id2" x="0" y="0"></location><init ref="id2"/></template><template><name>Robot System</name><location id="id3" x="0" y="0"></location><init ref="id3"/></template><template><name>Scanner System</name><location id="id4" x="0" y="0"></location><init ref="id4"/></template><template><name>Job System</name><location id="id5" x="0" y="0"></location><init ref="id5"/></template><system>// Place template instantiations here.
 Process = Template();
 
 // List one or more processes to be composed into a system.
