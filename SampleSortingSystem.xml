@@ -491,6 +491,7 @@ void CheckJob(){
 }</declaration>
 		<location id="id25" x="1037" y="-17">
 			<name x="1062" y="-25">JobSent</name>
+			<committed/>
 		</location>
 		<location id="id26" x="484" y="-51">
 			<name x="450" y="-93">JobUnavailable</name>
