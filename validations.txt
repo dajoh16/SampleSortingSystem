@@ -1,0 +1,12 @@
+Input System
+ - For ALL paths There EXISTS a path from the input system to the brake system
+
+Brake System
+ - 
+ - There EXISTS a path where UNTIL the sample is inserted into the queue it brakes
+ - For ALL paths there EXISTS a path where !brake => error
+ - There EXISTS a path from the brake system to the queue system
+
+Queue system
+ - 
+

@@ -134,9 +134,9 @@ Sample CurrentSample;</declaration>
 			<name x="-256" y="-160">SampleInserted</name>
 			<committed/>
 		</location>
-		<location id="id7" x="-272" y="-304">
-			<name x="-264" y="-336">Brake</name>
-			<label kind="invariant" x="-248" y="-312">SampleBrake &lt;= 1000</label>
+		<location id="id7" x="-272" y="-306">
+			<name x="-264" y="-338">Brake</name>
+			<label kind="invariant" x="-255" y="-314">SampleBrake &lt;= 1001</label>
 		</location>
 		<location id="id8" x="-720" y="-304">
 			<name x="-768" y="-312">Start</name>
@@ -151,11 +151,13 @@ Sample CurrentSample;</declaration>
 		<transition>
 			<source ref="id7"/>
 			<target ref="id5"/>
+			<label kind="guard" x="-263" y="-391">SampleBrake &gt; 1000</label>
 		</transition>
 		<transition>
 			<source ref="id7"/>
 			<target ref="id6"/>
-			<label kind="synchronisation" x="-264" y="-240">BrakeToQueue!</label>
+			<label kind="guard" x="-263" y="-255">SampleBrake &lt;= 1000</label>
+			<label kind="synchronisation" x="-263" y="-238">BrakeToQueue!</label>
 		</transition>
 		<transition>
 			<source ref="id8"/>
@@ -574,8 +576,20 @@ Job = JobSystem();
 system Robot, Input, Brake, Queue, Scanner, Job;</system>
 	<queries>
 		<query>
-			<formula></formula>
+			<formula>E&lt;&gt; ((Input.InitSample) imply Brake.Brake)</formula>
+			<comment>There exists a path from InitSample to Brake.Brake</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; (Brake.SampleBrake &lt;= 1000 and Brake.Brake imply Brake.SampleInserted)</formula>
 			<comment></comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; (Brake.SampleBrake &gt; 1000 and Brake.Brake imply Brake.Error)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] ( 1 &gt; 0 )</formula>
+			<comment>Test</comment>
 		</query>
 	</queries>
 </nta>
