@@ -357,121 +357,121 @@ int length()
 	<template>
 		<name>RobotSystem</name>
 		<declaration>clock JobWaitingTime;</declaration>
-		<location id="id16" x="-1351" y="-493">
-			<name x="-1411" y="-552">isJobAvailable</name>
-			<label kind="invariant" x="-1428" y="-535">JobWaitingTime &lt; 3000</label>
+		<location id="id16" x="-1427" y="-1062">
+			<name x="-1487" y="-1121">isJobAvailable</name>
+			<label kind="invariant" x="-1504" y="-1104">JobWaitingTime &lt; 3000</label>
 		</location>
-		<location id="id17" x="-399" y="-493">
-			<name x="-425" y="-476">SampleProvided</name>
+		<location id="id17" x="-475" y="-1062">
+			<name x="-501" y="-1045">SampleProvided</name>
 		</location>
-		<location id="id18" x="-840" y="-488">
-			<name x="-816" y="-476">SamplePicked</name>
+		<location id="id18" x="-916" y="-1057">
+			<name x="-892" y="-1045">SamplePicked</name>
 		</location>
-		<location id="id19" x="-833" y="-297">
-			<name x="-960" y="-289">WaitingForSample</name>
+		<location id="id19" x="-909" y="-866">
+			<name x="-1036" y="-858">WaitingForSample</name>
 		</location>
-		<location id="id20" x="-1351" y="-297">
-			<name x="-1334" y="-289">RobotHandledSample</name>
+		<location id="id20" x="-1427" y="-866">
+			<name x="-1410" y="-858">RobotHandledSample</name>
 		</location>
-		<location id="id21" x="-1436" y="-399">
-			<name x="-1581" y="-408">JobSystemTooSlow</name>
+		<location id="id21" x="-1512" y="-968">
+			<name x="-1657" y="-977">JobSystemTooSlow</name>
 		</location>
-		<location id="id22" x="-773" y="-399">
-			<name x="-756" y="-408">SampleIDInvalid</name>
+		<location id="id22" x="-849" y="-968">
+			<name x="-832" y="-977">SampleIDInvalid</name>
 		</location>
-		<location id="id23" x="-1020" y="-714">
-			<name x="-1207" y="-722">SampleSortedFromQueue</name>
+		<location id="id23" x="-1096" y="-1283">
+			<name x="-1283" y="-1291">SampleSortedFromQueue</name>
 			<committed/>
 		</location>
 		<init ref="id19"/>
 		<transition>
 			<source ref="id23"/>
 			<target ref="id19"/>
-			<label kind="assignment" x="-518" y="-323">sorted += 1</label>
-			<nail x="-1020" y="-748"/>
-			<nail x="-314" y="-748"/>
-			<nail x="-314" y="-297"/>
+			<label kind="assignment" x="-594" y="-892">sorted += 1</label>
+			<nail x="-1096" y="-1317"/>
+			<nail x="-390" y="-1317"/>
+			<nail x="-390" y="-866"/>
 		</transition>
 		<transition>
 			<source ref="id18"/>
 			<target ref="id23"/>
-			<label kind="guard" x="-969" y="-739">RobotSample.validID == true 
+			<label kind="guard" x="-1045" y="-1308">RobotSample.validID == true 
 &amp;&amp; RobotSample.scanned == true
 &amp;&amp; RobotSample.job == true</label>
 		</transition>
 		<transition>
 			<source ref="id22"/>
 			<target ref="id19"/>
-			<label kind="assignment" x="-803" y="-348">rejected += 1</label>
+			<label kind="assignment" x="-879" y="-917">rejected += 1</label>
 		</transition>
 		<transition>
 			<source ref="id18"/>
 			<target ref="id22"/>
-			<label kind="guard" x="-722" y="-459">RobotSample.scanned == true 
+			<label kind="guard" x="-798" y="-1028">RobotSample.scanned == true 
 &amp;&amp; RobotSample.validID == false</label>
 		</transition>
 		<transition>
 			<source ref="id21"/>
 			<target ref="id20"/>
-			<label kind="synchronisation" x="-1521" y="-365">JobToRobot?</label>
-			<label kind="assignment" x="-1555" y="-348">RobotSample.job = false</label>
-			<label kind="comments" x="-1589" y="-323">Waiting for the Job system
+			<label kind="synchronisation" x="-1597" y="-934">JobToRobot?</label>
+			<label kind="assignment" x="-1631" y="-917">RobotSample.job = false</label>
+			<label kind="comments" x="-1665" y="-892">Waiting for the Job system
 to recover. (Avoid Deadlock)</label>
 		</transition>
 		<transition>
 			<source ref="id16"/>
 			<target ref="id21"/>
-			<label kind="guard" x="-1564" y="-459">JobWaitingTime &gt;= 3000</label>
+			<label kind="guard" x="-1640" y="-1028">JobWaitingTime &gt;= 3000</label>
 		</transition>
 		<transition>
 			<source ref="id20"/>
 			<target ref="id19"/>
-			<label kind="guard" x="-1190" y="-340">RobotSample.job == false</label>
-			<label kind="synchronisation" x="-1164" y="-323">RobotToQueue!</label>
+			<label kind="guard" x="-1266" y="-909">RobotSample.job == false</label>
+			<label kind="synchronisation" x="-1240" y="-892">RobotToQueue!</label>
 		</transition>
 		<transition>
 			<source ref="id20"/>
 			<target ref="id19"/>
-			<label kind="guard" x="-1190" y="-263">RobotSample.job == true</label>
-			<label kind="assignment" x="-1139" y="-246">sorted += 1</label>
-			<nail x="-1351" y="-221"/>
-			<nail x="-833" y="-221"/>
+			<label kind="guard" x="-1266" y="-832">RobotSample.job == true</label>
+			<label kind="assignment" x="-1215" y="-815">sorted += 1</label>
+			<nail x="-1427" y="-790"/>
+			<nail x="-909" y="-790"/>
 		</transition>
 		<transition>
 			<source ref="id16"/>
 			<target ref="id20"/>
-			<label kind="synchronisation" x="-1343" y="-467">JobToRobot?</label>
-			<label kind="assignment" x="-1334" y="-433">RobotSample = JobSample</label>
+			<label kind="synchronisation" x="-1419" y="-1036">JobToRobot?</label>
+			<label kind="assignment" x="-1410" y="-1002">RobotSample = JobSample</label>
 		</transition>
 		<transition>
 			<source ref="id17"/>
 			<target ref="id18"/>
-			<label kind="synchronisation" x="-654" y="-680">ScannerToRobot?</label>
-			<label kind="assignment" x="-714" y="-646">RobotSample = ScannerSample</label>
-			<nail x="-399" y="-654"/>
-			<nail x="-841" y="-654"/>
+			<label kind="synchronisation" x="-730" y="-1249">ScannerToRobot?</label>
+			<label kind="assignment" x="-790" y="-1215">RobotSample = ScannerSample</label>
+			<nail x="-475" y="-1223"/>
+			<nail x="-917" y="-1223"/>
 		</transition>
 		<transition>
 			<source ref="id18"/>
 			<target ref="id16"/>
-			<label kind="guard" x="-1190" y="-578">RobotSample.validID == true 
+			<label kind="guard" x="-1266" y="-1147">RobotSample.validID == true 
 &amp;&amp; RobotSample.scanned == true
 &amp;&amp; RobotSample.job == false</label>
-			<label kind="synchronisation" x="-1156" y="-603">RobotToJob!</label>
-			<label kind="assignment" x="-1164" y="-518">JobWaitingTime = 0</label>
+			<label kind="synchronisation" x="-1232" y="-1172">RobotToJob!</label>
+			<label kind="assignment" x="-1240" y="-1087">JobWaitingTime = 0</label>
 		</transition>
 		<transition>
 			<source ref="id18"/>
 			<target ref="id17"/>
-			<label kind="guard" x="-782" y="-528">RobotSample.scanned == false</label>
-			<label kind="synchronisation" x="-680" y="-544">RobotToScanner!</label>
+			<label kind="guard" x="-858" y="-1097">RobotSample.scanned == false</label>
+			<label kind="synchronisation" x="-756" y="-1113">RobotToScanner!</label>
 		</transition>
 		<transition>
 			<source ref="id19"/>
 			<target ref="id18"/>
-			<label kind="synchronisation" x="-1037" y="-450">QueueToRobot?</label>
-			<label kind="assignment" x="-1079" y="-433">RobotSample = QueueSample</label>
-			<nail x="-892" y="-399"/>
+			<label kind="synchronisation" x="-1113" y="-1019">QueueToRobot?</label>
+			<label kind="assignment" x="-1155" y="-1002">RobotSample = QueueSample</label>
+			<nail x="-968" y="-968"/>
 		</transition>
 	</template>
 	<template>
@@ -576,19 +576,59 @@ Job = JobSystem();
 system Robot, Input, Brake, Queue, Scanner, Job;</system>
 	<queries>
 		<query>
-			<formula>E&lt;&gt; ((Input.InitSample) imply Brake.Brake)</formula>
-			<comment>There exists a path from InitSample to Brake.Brake</comment>
+			<formula>E&lt;&gt; ((Input.InitSample) imply Brake.Start)</formula>
+			<comment>There exists a path from the input system to the brake system</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Input.SampleSend imply Brake.Brake</formula>
+			<comment>When a sample is send to the brake system it must always brake</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; (Brake.SampleBrake &lt;= 1000 and Brake.Brake imply Brake.SampleInserted)</formula>
-			<comment></comment>
+			<comment>If it has taken less than 1000 milliseconds to brake a sample then insert it into the queue</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; (Brake.SampleBrake &gt; 1000 and Brake.Brake imply Brake.Error)</formula>
+			<comment>If it takes more than 1000 milliseconds to brake a sample then an error has occured and human intervention is required</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Queue.Ready imply Robot.WaitingForSample</formula>
+			<comment>There exists a path from the Queue system to the Robot system</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Queue.Ready imply Job.Ready</formula>
+			<comment>There exists a path from the queue system to the job system</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Job.JobSent imply Queue.JobReceived</formula>
+			<comment>There exists a path from the job system to the queue system</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Robot.SampleSortedFromQueue imply sorted &gt; 0 and Robot.WaitingForSample</formula>
+			<comment>See if it is possible to sort samples</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; rejected &gt; 0</formula>
+			<comment>See if it is possible to reject samples</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Queue.SampleToRobot imply Robot.SamplePicked</formula>
 			<comment></comment>
 		</query>
 		<query>
-			<formula>A[] ( 1 &gt; 0 )</formula>
+			<formula>A&lt;&gt; Robot.SamplePicked imply Scanner.SampleReady</formula>
+			<comment>Does a path exist from the robot to the scanner system`?</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; (Robot.JobWaitingTime &gt; 3000 and Robot.isJobAvailable imply Robot.WaitingForSample)</formula>
+			<comment>System doesn't freeze when job system takes longer than 3000 milliseconds</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Robot.JobWaitingTime &lt; 3000 and Robot.isJobAvailable imply (sorted &gt; 0 and Robot.WaitingForSample) or (Queue.SampleReturned)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; ( 1 &gt; 0 )</formula>
 			<comment>Test</comment>
 		</query>
 	</queries>
