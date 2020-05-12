@@ -4,6 +4,7 @@
 	<declaration>// Place global declarations here.
 int count = 0;
 
+clock GlobalClock;
 
 int sorted = 0;
 int rejected = 0;
@@ -578,7 +579,6 @@ int length()
 	</template>
 	<template>
 		<name>RobotSystem</name>
-		<declaration>clock JobWaitingTime;</declaration>
 		<location id="id32" x="-1351" y="-493">
 			<name x="-1453" y="-535">isJobAvailable</name>
 		</location>
@@ -789,8 +789,10 @@ Queue = QueueSystem();
 Robot = RobotSystem();
 Scanner = ScannerSystem();
 Job = JobSystem();
+Controller = ControllerSystem();
+
 // List one or more processes to be composed into a system.
-system Robot, Input, Brake, Queue, Scanner, Job;</system>
+system Controller, Robot, Input, Brake, Queue, Scanner, Job;</system>
 	<queries>
 		<query>
 			<formula>E&lt;&gt; ((Input.InitSample) imply Brake.Start)</formula>
@@ -837,11 +839,11 @@ system Robot, Input, Brake, Queue, Scanner, Job;</system>
 			<comment>Does a path exist from the robot to the scanner system`?</comment>
 		</query>
 		<query>
-			<formula>A&lt;&gt; (Robot.JobWaitingTime &gt; 3000 and Robot.isJobAvailable imply Robot.WaitingForSample)</formula>
+			<formula>A&lt;&gt; (Controller.JobWaitingTime &gt; 3000 and Controller.RobotIsJobAvailable imply Controller.Ready)</formula>
 			<comment>System doesn't freeze when job system takes longer than 3000 milliseconds</comment>
 		</query>
 		<query>
-			<formula>A&lt;&gt; Robot.JobWaitingTime &lt; 3000 and Robot.isJobAvailable imply sorted &gt; 0 and Robot.WaitingForSample</formula>
+			<formula>A&lt;&gt; Controller.JobWaitingTime &lt; 3000 and Controller.RobotIsJobAvailable imply sorted &gt; 0 and Controller.Ready</formula>
 			<comment></comment>
 		</query>
 		<query>
