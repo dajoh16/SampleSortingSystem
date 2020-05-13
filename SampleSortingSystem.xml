@@ -636,12 +636,12 @@ QueueClock = 0</label>
 			<source ref="id34"/>
 			<target ref="id41"/>
 			<label kind="guard" x="-824" y="-518">RobotSample.scanned == false</label>
+			<label kind="assignment" x="-823" y="-484">RobotClock = 0</label>
 		</transition>
 		<transition>
 			<source ref="id40"/>
 			<target ref="id34"/>
-			<label kind="guard" x="-1003" y="-459">RobotClock &gt;= 1500</label>
-			<label kind="assignment" x="-960" y="-476">RobotClock = 0</label>
+			<label kind="guard" x="-994" y="-467">RobotClock &gt;= 1500</label>
 		</transition>
 		<transition>
 			<source ref="id39"/>
@@ -686,7 +686,7 @@ RobotClock = 0</label>
 			<source ref="id37"/>
 			<target ref="id35"/>
 			<label kind="guard" x="-765" y="-374">RobotClock &gt;= 2000</label>
-			<label kind="assignment" x="-803" y="-348">rejected += 1</label>
+			<label kind="assignment" x="-799" y="-348">rejected += 1</label>
 		</transition>
 		<transition>
 			<source ref="id36"/>
@@ -721,7 +721,6 @@ RobotClock = 0</label>
 			<target ref="id33"/>
 			<label kind="guard" x="-569" y="-510">RobotClock &gt; 500</label>
 			<label kind="synchronisation" x="-586" y="-527">RobotToControllerScan!</label>
-			<label kind="assignment" x="-527" y="-484">RobotClock = 0</label>
 		</transition>
 		<transition>
 			<source ref="id35"/>
@@ -839,19 +838,67 @@ Controller = ControllerSystem();
 system Controller, Robot, Input, Brake, Queue, Scanner, Job;</system>
 	<queries>
 		<query>
+			<formula>A&lt;&gt; Controller.Ready imply Job.Ready</formula>
+			<comment>A path exists from the controller to the Job System</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Controller.Ready imply Scanner.WaitingForSample</formula>
+			<comment>A path exists from the controller to the Scanner System</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Controller.Ready imply Robot.WaitingForSample</formula>
+			<comment>A path exists from the controller to the Robot System</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Controller.Ready imply Queue.Ready</formula>
+			<comment>A path exists from the controller to the Queue System</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Queue.Ready imply Job.JobAvailable</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Queue.Ready imply Job.JobUnavailable</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Controller.Ready imply Controller.SampleInvalid</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Controller.Ready imply Controller.SampleValid</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Controller.Ready and Job.JobAvailable imply Job.JobSent</formula>
+			<comment></comment>
+		</query>
+		<query>
 			<formula>E&lt;&gt; ((Input.InitSample) imply Brake.Start)</formula>
 			<comment>There exists a path from the input system to the brake system</comment>
 		</query>
 		<query>
-			<formula>A&lt;&gt; Input.SampleSend imply Brake.Brake</formula>
-			<comment>When a sample is send to the brake system it must always brake</comment>
+			<formula>E&lt;&gt; Queue.Ready imply Robot.WaitingForSample</formula>
+			<comment></comment>
 		</query>
 		<query>
-			<formula>A&lt;&gt; (Brake.SampleBrake &lt;= 1000 and Brake.Brake imply Brake.SampleInserted)</formula>
+			<formula>E&lt;&gt; Robot.WaitingForSample imply Scanner.WaitingForSample</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Robot.WaitingForSample imply Queue.Ready</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; Input.SampleSend and GlobalClock &lt;=20000</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Brake.Brake imply Brake.SampleInserted and Brake.SampleBrake &lt;= 1000</formula>
 			<comment>If it has taken less than 1000 milliseconds to brake a sample then insert it into the queue</comment>
 		</query>
 		<query>
-			<formula>A&lt;&gt; (Brake.SampleBrake &gt; 1000 and Brake.Brake imply Brake.Error)</formula>
+			<formula>E&lt;&gt; Brake.Brake imply Brake.Error and Brake.SampleBrake &gt; 1000</formula>
 			<comment>If it takes more than 1000 milliseconds to brake a sample then an error has occured and human intervention is required</comment>
 		</query>
 		<query>
