@@ -890,7 +890,7 @@ system Controller, Robot, Input, Brake, Queue, Scanner, Job;</system>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Controller.Ready and Job.JobAvailable imply Job.JobSent</formula>
-			<comment>There exists a path </comment>
+			<comment>There exists a path to the job system from the controller</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; ((Input.InitSample) imply Brake.Start)</formula>
@@ -898,19 +898,19 @@ system Controller, Robot, Input, Brake, Queue, Scanner, Job;</system>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Queue.Ready imply Robot.WaitingForSample</formula>
-			<comment></comment>
+			<comment>There exists a path to the robot system from the queue system</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Robot.WaitingForSample imply Scanner.WaitingForSample</formula>
-			<comment></comment>
+			<comment>There Exists a path to the scanner system from the robot system</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Robot.WaitingForSample imply Queue.Ready</formula>
-			<comment></comment>
+			<comment>There exists a path to the queue from the robot</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Input.SampleSend and GlobalClock &lt;=20000</formula>
-			<comment></comment>
+			<comment>it takes less then 20 seconds to send a sample</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Brake.Brake imply Brake.SampleInserted and Brake.SampleBrake &lt;= 1000</formula>
@@ -922,23 +922,23 @@ system Controller, Robot, Input, Brake, Queue, Scanner, Job;</system>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Queue.Shift and Queue.QueueClock &lt;= 200 imply Queue.Ready</formula>
-			<comment></comment>
+			<comment>A shift takes 0.2 seconds</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Queue.Ready and Queue.shiftTimer &lt;= 5000 imply Queue.Shift</formula>
-			<comment></comment>
+			<comment>The Queue shifts every 5 seconds.</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Queue.length() &lt;= 26</formula>
-			<comment></comment>
+			<comment>The Queue must be able to contain 26 samples</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Queue.Ready imply Robot.SamplePicked</formula>
-			<comment></comment>
+			<comment>The Queue system must be able to notify the robot that a sample must be picked up</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Scanner.SampleReady imply Robot.SampleIDInvalid</formula>
-			<comment></comment>
+			<comment>If an alarm is returned by the Scanning system when scanning the sample, the robot must be able to reject the sample</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Robot.PickingUpSample imply Robot.SamplePicked and Robot.RobotClock &lt; 2000 and Robot.RobotClock &gt;= 1500</formula>
@@ -966,7 +966,7 @@ system Controller, Robot, Input, Brake, Queue, Scanner, Job;</system>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Queue.SampleToRobot imply Robot.SamplePicked</formula>
-			<comment></comment>
+			<comment>there exists a path from the queue to the robot</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Robot.SamplePicked imply Scanner.SampleReady</formula>
@@ -978,87 +978,87 @@ system Controller, Robot, Input, Brake, Queue, Scanner, Job;</system>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Controller.JobWaitingTime &lt; 3000 and Controller.RobotIsJobAvailable imply sorted &gt; 0 and Controller.Ready</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>A&lt;&gt; Robot.JobWaitingTime &lt; 3000 and Robot.isJobAvailable imply Queue.SampleReturned</formula>
-			<comment></comment>
+			<comment>It takes less than 3 seconds to fetcha job and sort the sample</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Scanner.SampleReady imply Scanner.ValidateSample</formula>
 			<comment>Check if we can move from SampleReady to ValidateSample</comment>
 		</query>
 		<query>
+			<formula>A&lt;&gt; Robot.PickingUpSample imply Robot.SamplePicked and Robot.RobotClock &lt; 2000 and Robot.RobotClock &gt;= 1500</formula>
+			<comment>Picking up a sample from the queue takes between 1.5 to 2 seconds</comment>
+		</query>
+		<query>
 			<formula>A&lt;&gt; Robot.SamplePicked imply Robot.SampleProvided and Robot.RobotClock &gt; 500 and Robot.RobotClock &lt;= 1000</formula>
-			<comment></comment>
+			<comment>Moving a sample to the scanner takes between 0.5 to 1 second</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Robot.SampleSortedFromQueue imply sorted &gt; 0 and Robot.RobotClock &gt; 2000 and Robot.RobotClock &lt; 3000</formula>
-			<comment></comment>
+			<comment>Sorting a sample takes between 2 - 3 seconds</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Controller.JobWaitingTime &lt; 3000 and Controller.RobotIsJobAvailable imply sorted &gt; 0 and Controller.Ready and Robot.RobotClock &gt; 2000 and Robot.RobotClock &lt; 3000</formula>
-			<comment></comment>
+			<comment>Sorting a sample takes between 2 - 3 seconds</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Controller.JobWaitingTime &lt; 3000 and Robot.isJobAvailable imply Queue.SampleReturned and Robot.RobotClock &gt; 2000 and Robot.RobotClock &lt; 3000</formula>
-			<comment></comment>
+			<comment>Sorting a sample takes between 2 - 3 seconds</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Robot.NoJobAvailable imply Queue.SampleReturned and Robot.RobotClock &lt; 2000 and Robot.RobotClock &gt;= 1500</formula>
-			<comment></comment>
+			<comment>Putting a sample back into the queue takes 1.5 to 2 seconds</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Robot.SamplePicked</formula>
-			<comment></comment>
+			<comment>Must be able to pick up a Sample from the queue system</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Robot.SampleProvided</formula>
-			<comment></comment>
+			<comment>Must be able to provide a Sample to the Scanner System</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Robot.NoJobAvailable</formula>
-			<comment></comment>
+			<comment>Must put back into the Queue System when there is no Job available for the sample</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; sorted &gt; 0</formula>
-			<comment></comment>
+			<comment>Must be able to put a Sample into the final destination</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Robot.SampleIDInvalid</formula>
-			<comment></comment>
+			<comment>Must be able to reject a Sample if the Scanner system returns an alarm</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Scanner.SampleReady imply Controller.SampleScanned and Scanner.ScannerClock &gt;= 250 and Scanner.ScannerClock &lt;= 500</formula>
-			<comment></comment>
+			<comment>Provides a valid id to the samples that are received from the Robot System.</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Robot.SampleProvided and Robot.RobotClock &lt;= 2000 imply rejected &gt; 1</formula>
-			<comment></comment>
+			<comment>Rejecting a sample takes 2 seconds</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Scanner.ValidateSample</formula>
-			<comment></comment>
+			<comment>Must be able to scan a  sample</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Job.JobAvailable</formula>
-			<comment></comment>
+			<comment>Checks if a job is available for the given sample</comment>
 		</query>
 		<query>
 			<formula>A&lt;&gt; Controller.JobWaitingTime &lt; 3000 and Controller.RobotIsJobAvailable imply sorted &gt; 0 and Controller.Ready</formula>
-			<comment></comment>
+			<comment>If the sample is provided by the Robot System the Job System must respond within 3000 milliseconds. </comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Job.JobSent</formula>
-			<comment></comment>
+			<comment>There exists a path to JobSent</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Brake.Brake</formula>
-			<comment></comment>
+			<comment>There exists a path to the Brake</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Input.SampleSend</formula>
-			<comment></comment>
+			<comment>There exists a path to SampleSend</comment>
 		</query>
 		<query>
 			<formula>A[] ( 1 &gt; 0 )</formula>
